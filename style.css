@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+}
+
+
+.calc {
+    width: 41rem;
+    height: 51rem;
+    border: solid black .5rem;
+}
+
+#calcScreen {
+    width: auto;
+    height: 10rem;
+    display: flex;
+    /* background-color: red; */
+}
+
+#solutionBox {
+    width: 30rem;
+    height: 10rem;
+    background-color: red;
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+}
+
+#calcResult {
+    font-size: 40px;
+    padding: 2rem;
+    margin: 0;
+
+}
+
+
+#calcButtons {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0rem;
+}
+
+
+button {
+    width: 10rem;
+    height: 10rem;
+}
