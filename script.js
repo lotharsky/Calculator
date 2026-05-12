@@ -1,3 +1,9 @@
+/*
+    Fix divide by 0 -> final
+*/
+
+
+
 function addition(a, b) {
     return a + b;
 };
@@ -29,23 +35,10 @@ function operate (num1, num2, operator){
     } else {return "ERROR: Operator does not exist"}
 }
 
-function NumsAndOp(array) {
 
-    const ind = array.findIndex(element => isNaN(parseInt(element)))
-    
-
-    const num1 = array.slice(0, ind).join('')
-    const num2 = array.slice(ind + 1, -1).join('')
-
-    let op = array[ind]
-
-
-    return [num1, num2, op]
-
-}
-
-
-let test = []
+let currentValue = ""
+let previousValue = ""
+let operator = null
 
 const btn = document.querySelectorAll("Button")
 const clearBtn = document.querySelector("#clearBtn")
@@ -53,45 +46,78 @@ const display = document.querySelector("#calcResult")
 
 btn.forEach(button => {
     button.addEventListener("click", event => {
-        console.log(event.target.textContent)
 
-        test.push(event.target.textContent)
-        display.textContent += event.target.textContent
 
-        if (event.target.textContent === "=") {
+        if(!isNaN(Number(event.target.textContent))) {
+            console.log("joepie")
+            currentValue += event.target.textContent
+            console.log(currentValue)
+            display.textContent = currentValue
+        } 
+        
+        else if (isNaN(Number(event.target.textContent))) {
+
+            if (previousValue === "") {
+                previousValue = currentValue
+                currentValue = ""
+                operator = event.target.textContent
+
+                console.log(previousValue, operator)
+                
+            } 
+
+            else if (["+", "-", "x", "/"].includes(event.target.textContent)) {
+                if (currentValue === "") {
+                    operator = event.target.textContent
+                    return;
+                }
+               
+                else if (operator === "/" && Number(currentValue) === 0) {
+                    display.textContent = "Do not divide by 0 Bitch"
+                    currentValue = ""
+                    previousValue = ""
+                    operator = null
+                } else {
+
+                    let result = operate(Number(previousValue), Number(currentValue), operator)
+                    operator = event.target.textContent
+                    previousValue = result
+                    currentValue = ""
+                    display.textContent = result
+
+                }
+
+                
+
+            }
+
+            else if (event.target.textContent === "=") {
+                if(operator === "/" && Number(currentValue) === 0) {
+                    console.log("Bitch")
+                    display.textContent = "Bitch"
+                } else {
+                    let result = operate(Number(previousValue), Number(currentValue), operator)
+                    display.textContent = result
+                    console.log("=", result)
+                }
+
+            }
+
+            else if (event.target.textContent === "C") {
+
+                console.log("it works")
+
+                previousValue = ""
+                currentValue = ""
+                operator = ""
+                display.textContent = "0"
+            }
             
-            console.log("disabled")
-            btn.forEach(element => {
-                element.disabled = true
-            });
-
-            clearBtn.disabled = false
-
-            console.log(test)
-            let [an, bn, operator] = NumsAndOp(test)
-
-            an = Number(an);
-            bn = Number(bn);
-
-            console.log(an, bn, operator)
-
-
-            const result = operate(an, bn, operator)
-
-            display.textContent = result
-            console.log(operate(an, bn, operator))
-
+            console.log(previousValue)
+            console.log(operator)
         }
 
-
-        if (event.target.textContent === "C") {
-            display.textContent = ""
-
-            btn.forEach(element => {
-                test = []
-                element.disabled = false
-            })
-        }
+        
 
     })
 })

@@ -19,7 +19,7 @@
 #solutionBox {
     width: 30rem;
     height: 10rem;
-    background-color: red;
+    /* background-color: red; */
     display: flex;
     align-items: end;
     justify-content: flex-end;
